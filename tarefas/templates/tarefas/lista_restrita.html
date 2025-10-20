@@ -1,0 +1,21 @@
+{% extends 'tarefas/base.html' %}
+
+{% block content %}
+    <h2 class="card-title text-center mb-4">Demandas (Visão Restrita)</h2>
+    <div class="list-group">
+        {% for demanda in demandas %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start mb-2">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ demanda.titulo }}</h5>
+                    <small>{{ demanda.data_criacao|date:"d/m/Y" }}</small>
+                </div>
+                <p class="mb-1"><strong>Responsável:</strong> {{ demanda.responsavel.username|default:"N/A" }}</p>
+                <small><strong>Urgência:</strong> {{ demanda.get_grau_urgencia_display }} | <strong>Solicitante:</strong> {{ demanda.solicitante.username }}</small>
+            </div>
+        {% empty %}
+            <p class="text-center">Nenhuma demanda cadastrada.</p>
+        {% endfor %}
+    </div>
+    <hr>
+    <a href="{% url 'cadastrar_demanda' %}" class="btn btn-secondary">Voltar</a>
+{% endblock %}

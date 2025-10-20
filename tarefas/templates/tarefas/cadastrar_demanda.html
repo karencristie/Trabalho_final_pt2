@@ -1,0 +1,19 @@
+{% extends 'tarefas/base.html' %}
+
+{% block content %}
+    <h2 class="card-title text-center mb-4">Cadastrar Nova Demanda</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <hr>
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'logout' %}" class="btn btn-secondary">Sair</a>
+            <div>
+                {% if user.is_staff %}
+                    <a href="{% url 'lista_restrita' %}" class="btn btn-info">Área Restrita</a>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Cadastrar Demanda</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'tarefas/base.html' %}
+
+{% block content %}
+    <div class="alert alert-success text-center">
+        <h4 class="alert-heading">Sucesso!</h4>
+        <p>A demanda foi cadastrada com sucesso.</p>
+    </div>
+    <div class="text-center">
+        <a href="{% url 'cadastrar_demanda' %}" class="btn btn-primary">Cadastrar Nova Demanda</a>
+        <a href="{% url 'logout' %}" class="btn btn-secondary">Sair</a>
+    </div>
+{% endblock %}
