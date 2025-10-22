@@ -1,10 +1,11 @@
 # tarefas/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import DemandaForm
 from .models import Demanda
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.views.decorators.http import require_POST
 
 # Função para checar se o usuário é Administrador (staff)
 def is_admin(user):
@@ -51,3 +52,31 @@ def minhas_demandas(request):
     # Filtra as demandas para pegar apenas aquelas onde o 'solicitante' é o usuário logado
     demandas_do_usuario = Demanda.objects.filter(solicitante=request.user).order_by('-data_criacao')
     return render(request, 'tarefas/minhas_demandas.html', {'demandas': demandas_do_usuario})
+
+
+
+@require_POST # Garante que esta view só aceite requisições POST
+@login_required
+@user_passes_test(is_admin)
+def marcar_em_andamento(request, demanda_id):
+    demanda = get_object_or_404(Demanda, id=demanda_id)
+    demanda.status = 'AND'
+    demanda.save()
+    return redirect('lista_restrita')
+
+@require_POST
+@login_required
+@user_passes_test(is_admin)
+def marcar_concluida(request, demanda_id):
+    demanda = get_object_or_404(Demanda, id=demanda_id)
+    demanda.status = 'CON'
+    demanda.save()
+    return redirect('lista_restrita')
+
+@require_POST
+@login_required
+@user_passes_test(is_admin)
+def excluir_demanda(request, demanda_id):
+    demanda = get_object_or_404(Demanda, id=demanda_id)
+    demanda.delete()
+    return redirect('lista_restrita')

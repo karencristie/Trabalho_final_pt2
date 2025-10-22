@@ -9,14 +9,25 @@
             <h5 class="mb-1">{{ demanda.titulo }}</h5>
             <small>{{ demanda.data_criacao|date:"d/m/Y" }}</small>
         </div>
-        <p class="mb-1"><strong>Responsável:</strong> {{ demanda.responsavel.username|default:"N/A" }}</p>
-        
+
+        <p class="mb-1">
+            <strong>Status:</strong>
+            {% if demanda.status == 'PEN' %}
+                <span class="badge bg-warning text-dark">Pendente</span>
+            {% elif demanda.status == 'AND' %}
+                <span class="badge bg-info text-dark">Em Andamento</span>
+            {% elif demanda.status == 'CON' %}
+                <span class="badge bg-success">Concluída</span>
+            {% else %}
+                <span class="badge bg-secondary">{{ demanda.get_status_display }}</span>
+            {% endif %}
+        </p>
+        <p class="mb-1"><strong>Responsável:</strong> {{ demanda.responsavel.nome|default:"N/A" }}</p>
         <p class="mb-1"><strong>Descrição:</strong> {{ demanda.descricao|linebreaksbr }}</p>
-        
-        <small><strong>Urgência:</strong> {{ demanda.get_grau_urgencia_display }} | <strong>Solicitante:</strong> {{ demanda.solicitante.username }}</small>
+        <small><strong>Urgência:</strong> {{ demanda.get_grau_urgencia_display }}</small>
     </div>
 {% empty %}
-    <p class="text-center">Nenhuma demanda cadastrada.</p>
+    <p class="text-center">Você ainda não cadastrou nenhuma demanda.</p>
 {% endfor %}
     </div>
     <hr>
