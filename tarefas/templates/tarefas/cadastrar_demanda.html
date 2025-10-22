@@ -2,18 +2,31 @@
 
 {% block content %}
     <h2 class="card-title text-center mb-4">Cadastrar Nova Demanda</h2>
+    
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        
         <hr>
-        <div class="d-flex justify-content-between">
-            <a href="{% url 'logout' %}" class="btn btn-secondary">Sair</a>
-            <div>
-                {% if user.is_staff %}
-                    <a href="{% url 'lista_restrita' %}" class="btn btn-info">Área Restrita</a>
-                {% endif %}
-                <button type="submit" class="btn btn-primary">Cadastrar Demanda</button>
-            </div>
+        
+        <div class="d-grid mb-3">
+             <button type="submit" class="btn btn-primary btn-lg">Cadastrar Demanda</button>
         </div>
     </form>
+    <div class="d-flex justify-content-between">
+        
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary">Sair</button>
+        </form>
+        
+        <div>
+            {% if user.is_staff %}
+                <a href="{% url 'lista_restrita' %}" class="btn btn-info">Área Restrita</a>
+            {% else %}
+                <a href="{% url 'minhas_demandas' %}" class="btn btn-info">Minhas Demandas</a>
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}

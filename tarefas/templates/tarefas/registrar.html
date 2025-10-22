@@ -1,0 +1,15 @@
+{% extends 'tarefas/base.html' %}
+
+{% block content %}
+    <h2 class="card-title text-center mb-4">Criar Conta</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+    <div class="text-center mt-3">
+        <a href="{% url 'login' %}">Já tem uma conta? Faça o login</a>
+    </div>
+{% endblock %}

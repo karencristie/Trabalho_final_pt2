@@ -2,10 +2,9 @@
 
 {% block content %}
     <h2 class="card-title text-center mb-4">Acessar Sistema</h2>
+    
     <form method="post">
-        {% csrf_token %}
-
-        {% if form.non_field_errors %}
+        {% csrf_token %}  {% if form.non_field_errors %}
             <div class="alert alert-danger">
                 {% for error in form.non_field_errors %}
                     {{ error }}
@@ -26,4 +25,8 @@
             <button type="submit" class="btn btn-primary">Entrar</button>
         </div>
     </form>
+    
+    <div class="text-center mt-3">
+        <a href="{% url 'registrar' %}">Não tem uma conta? Cadastre-se</a>
+    </div>
 {% endblock %}
