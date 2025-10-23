@@ -2,34 +2,40 @@
 
 {% block content %}
     <h2 class="card-title text-center mb-4">Minhas Demandas Cadastradas</h2>
-    <div class="list-group">
-        {% for demanda in demandas %}
-    <div class="list-group-item list-group-item-action flex-column align-items-start mb-2">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ demanda.titulo }}</h5>
-            <small>{{ demanda.data_criacao|date:"d/m/Y" }}</small>
+    
+    <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+    
+        <div class="list-group">
+            {% for demanda in demandas %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start mb-2">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ demanda.titulo }}</h5>
+                    <small>{{ demanda.data_criacao|date:"d/m/Y" }}</small>
+                </div>
+
+                <p class="mb-1">
+                    <strong>Status:</strong>
+                    {% if demanda.status == 'PEN' %}
+                        <span class="badge bg-warning text-dark">Pendente</span>
+                    {% elif demanda.status == 'AND' %}
+                        <span class="badge bg-info text-dark">Em Andamento</span>
+                    {% elif demanda.status == 'CON' %}
+                        <span class="badge bg-success">Concluída</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ demanda.get_status_display }}</span>
+                    {% endif %}
+                </p>
+                <p class="mb-1"><strong>Responsável:</strong> {{ demanda.responsavel.nome|default:"N/A" }}</p>
+                <p class="mb-1"><strong>Descrição:</strong> {{ demanda.descricao|linebreaksbr }}</p>
+                <small><strong>Urgência:</strong> {{ demanda.get_grau_urgencia_display }}</small>
+            </div>
+            {% empty %}
+                <p class="text-center">Você ainda não cadastrou nenhuma demanda.</p>
+            {% endfor %}
         </div>
 
-        <p class="mb-1">
-            <strong>Status:</strong>
-            {% if demanda.status == 'PEN' %}
-                <span class="badge bg-warning text-dark">Pendente</span>
-            {% elif demanda.status == 'AND' %}
-                <span class="badge bg-info text-dark">Em Andamento</span>
-            {% elif demanda.status == 'CON' %}
-                <span class="badge bg-success">Concluída</span>
-            {% else %}
-                <span class="badge bg-secondary">{{ demanda.get_status_display }}</span>
-            {% endif %}
-        </p>
-        <p class="mb-1"><strong>Responsável:</strong> {{ demanda.responsavel.nome|default:"N/A" }}</p>
-        <p class="mb-1"><strong>Descrição:</strong> {{ demanda.descricao|linebreaksbr }}</p>
-        <small><strong>Urgência:</strong> {{ demanda.get_grau_urgencia_display }}</small>
-    </div>
-{% empty %}
-    <p class="text-center">Você ainda não cadastrou nenhuma demanda.</p>
-{% endfor %}
     </div>
     <hr>
     <a href="{% url 'cadastrar_demanda' %}" class="btn btn-secondary">Voltar</a>
+
 {% endblock %}
